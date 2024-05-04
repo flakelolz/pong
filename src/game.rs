@@ -9,26 +9,26 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
         ..Default::default()
     };
 
-    let _ = spawn_paddle(rl, thread, &mut world, Player::Left);
-    let _ = spawn_paddle(rl, thread, &mut world, Player::Cpu);
-    let _ = spawn_ball(rl, thread, &mut world);
+    spawn_paddle(rl, thread, &mut world, Player::Left);
+    spawn_paddle(rl, thread, &mut world, Player::Cpu);
+    spawn_ball(rl, thread, &mut world);
+    resources(&mut world);
 
     while !rl.window_should_close() {
-
-
-
         // Update
         move_paddle(rl, &mut world);
         move_ball(&mut world);
-        check_collision(rl, &mut world);
+        check_collision(&mut world);
+        update_score(&mut world);
 
-
-
-        // Drawing
+        // Camera
+        // FIX: Scale with screen size correctly
         let width = rl.get_screen_width() as f32;
         let height = rl.get_screen_height() as f32;
         let zoom = (width / WWIDTH as f32).min(height / WHEIGHT as f32);
         camera.zoom = zoom;
+
+        // Drawing
         let mut d = rl.begin_drawing(thread);
         let mut d = d.begin_mode2D(camera);
         d.clear_background(Color::BLACK);
@@ -36,5 +36,6 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
         d.draw_line(WWIDTH / 2, 0, WWIDTH / 2, WHEIGHT, Color::WHITE);
         render_paddle(&mut d, &world);
         render_ball(&mut d, &world);
+        render_score(&mut d, &world);
     }
 }

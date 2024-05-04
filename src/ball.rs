@@ -1,4 +1,5 @@
 use crate::prelude::*;
+
 pub struct Ball;
 
 pub fn spawn_ball(rl: &mut RaylibHandle, thread: &RaylibThread, world: &mut World) -> Entity {
@@ -37,7 +38,7 @@ pub fn move_ball(world: &mut World) {
     }
 }
 
-pub fn check_collision(_rl: &RaylibHandle, world: &mut World) {
+pub fn check_collision(world: &mut World) {
     if let Some((_, (_, b_pos, b_collider, b_speed))) = world
         .query::<(&Ball, &Position, &Vector2, &mut Speed)>()
         .iter()
@@ -46,9 +47,15 @@ pub fn check_collision(_rl: &RaylibHandle, world: &mut World) {
         for (_, (_, p_collider)) in world.query::<(&Paddle, &Rectangle)>().iter() {
             if p_collider.check_collision_circle_rec(b_pos, b_collider.x / 2.) {
                 b_speed.x *= -1.;
+                // FIX: Fix bounce angle
             }
         }
     }
+}
+
+pub fn reset_ball(pos: &mut Position) {
+    pos.x = WWIDTH as f32 / 2.;
+    pos.y = WHEIGHT as f32 / 2.;
 }
 
 pub fn render_ball(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {

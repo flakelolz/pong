@@ -67,7 +67,7 @@ pub fn spawn_paddle(
                     paddle_w,
                     paddle_h,
                 ),
-                Speed::new(6., 6.),
+                Speed::new(5., 5.),
                 texture,
             ))
         }
@@ -79,9 +79,6 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
         .query::<(&Paddle, &Player, &mut Position, &mut Rectangle, &Speed)>()
         .iter()
     {
-        collider.x = pos.x - collider.width / 2.;
-        collider.y = pos.y - collider.height / 2.;
-
         // Limit movement
         if pos.y - collider.height / 2. <= 0. {
             pos.y = collider.height / 2.;
@@ -116,6 +113,10 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
                 }
             }
         }
+
+        // Update collider
+        collider.x = pos.x - collider.width / 2.;
+        collider.y = pos.y - collider.height / 2.;
     }
 }
 
