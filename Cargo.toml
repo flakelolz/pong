@@ -1,0 +1,21 @@
+[package]
+name = "pong"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hecs = "0.10.4"
+# NOTE: tracy-client version must be synced with the one "profiling" uses, or else it won't work. You can use tracy-client standalone though
+tracy-client = "0.17.0"
+profiling = { version = "1.0.15" }
+
+[dependencies.raylib]
+version = "5.0.0"
+git = "https://github.com/bitten2up/raylib-rs"
+branch = "5.0.0"
+
+[features]
+# cargo run --features="profile-with-tracy"
+profile-with-tracy = ["profiling/profile-with-tracy"]
