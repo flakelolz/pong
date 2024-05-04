@@ -38,14 +38,14 @@ pub fn move_ball(world: &mut World) {
 }
 
 pub fn check_collision(_rl: &RaylibHandle, world: &mut World) {
-    if let Some((_, (_, b_pos, b_collider))) = world
-        .query::<(&Ball, &Position, &BallCollider)>()
+    if let Some((_, (_, b_pos, b_collider, b_speed))) = world
+        .query::<(&Ball, &Position, &BallCollider, &mut Speed)>()
         .iter()
         .next()
     {
         for (_, (_, p_collider)) in world.query::<(&Paddle, &Rectangle)>().iter() {
             if p_collider.check_collision_circle_rec(b_pos, b_collider.x / 2.) {
-                println!("collided");
+                b_speed.x *= -1.;
             }
         }
     }
