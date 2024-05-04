@@ -27,7 +27,6 @@ pub fn spawn_paddle(
                 Paddle,
                 Player::Left,
                 Position::new(paddle_x, paddle_y),
-                Collider::new(paddle_w, paddle_h),
                 Rectangle::new(
                     paddle_x - paddle_w / 2.,
                     paddle_y - paddle_h / 2.,

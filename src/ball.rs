@@ -14,14 +14,14 @@ pub fn spawn_ball(rl: &mut RaylibHandle, thread: &RaylibThread, world: &mut Worl
         Ball,
         Position::new(WWIDTH as f32 / 2., WHEIGHT as f32 / 2.),
         Speed::new(7., 7.),
-        BallCollider::new(ball_w, ball_h),
+        Vector2::new(ball_w, ball_h),
         texture,
     ))
 }
 
 pub fn move_ball(world: &mut World) {
     for (_, (_, pos, collider, speed)) in world
-        .query::<(&Ball, &mut Position, &BallCollider, &mut Speed)>()
+        .query::<(&Ball, &mut Position, &Vector2, &mut Speed)>()
         .iter()
     {
         pos.x += speed.x;
@@ -39,7 +39,7 @@ pub fn move_ball(world: &mut World) {
 
 pub fn check_collision(_rl: &RaylibHandle, world: &mut World) {
     if let Some((_, (_, b_pos, b_collider, b_speed))) = world
-        .query::<(&Ball, &Position, &BallCollider, &mut Speed)>()
+        .query::<(&Ball, &Position, &Vector2, &mut Speed)>()
         .iter()
         .next()
     {
@@ -53,7 +53,7 @@ pub fn check_collision(_rl: &RaylibHandle, world: &mut World) {
 
 pub fn render_ball(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
     for (_, (_, position, collider, texture)) in world
-        .query::<(&Ball, &Position, &BallCollider, &Texture2D)>()
+        .query::<(&Ball, &Position, &Vector2, &Texture2D)>()
         .iter()
     {
         let source_rec = Rectangle::new(0., 0., collider.x, collider.y);
