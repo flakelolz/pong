@@ -45,9 +45,8 @@ pub fn check_collision(world: &mut World) {
         .next()
     {
         for (_, (_, p_collider)) in world.query::<(&Paddle, &RectCollider)>().iter() {
-            if p_collider.val.check_collision_circle_rec(b_pos, b_collider.val.x / 2.) {
+            if p_collider.val.check_collision_circle_rec(b_pos, b_collider.radius) {
                 b_speed.x *= -1.;
-                // FIX: Fix bounce angle
             }
         }
     }
@@ -68,6 +67,7 @@ pub fn render_ball(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
         let origin = Vector2::new(collider.val.x / 2., collider.val.y / 2.);
 
         d.draw_texture_pro(texture, source_rec, dest_rec, origin, 0., Color::WHITE);
+        // Debug
         // d.draw_circle_v(position, 1., Color::RED);
     }
 }
