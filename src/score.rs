@@ -15,11 +15,11 @@ pub fn update_score(world: &mut World) {
         let left = &mut score.left;
         let right = &mut score.right;
 
-        for (_, (_, pos, collider)) in world.query::<(&Ball, &mut Position, &Vector2)>().iter() {
-            if pos.x - collider.x / 2. <= 0. {
+        for (_, (_, pos, collider)) in world.query::<(&Ball, &mut Position, &CircCollider)>().iter() {
+            if pos.x - collider.val.x / 2. <= 0. {
                 *right += 1;
                 reset_ball(pos);
-            } else if pos.x + collider.x / 2. >= WWIDTH as f32 {
+            } else if pos.x + collider.val.x / 2. >= WWIDTH as f32 {
                 *left += 1;
                 reset_ball(pos);
             }

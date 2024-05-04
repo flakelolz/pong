@@ -27,7 +27,7 @@ pub fn spawn_paddle(
                 Paddle,
                 Player::Left,
                 Position::new(paddle_x, paddle_y),
-                Rectangle::new(
+                RectCollider::new(
                     paddle_x - paddle_w / 2.,
                     paddle_y - paddle_h / 2.,
                     paddle_w,
@@ -44,7 +44,7 @@ pub fn spawn_paddle(
                 Paddle,
                 Player::Right,
                 Position::new(paddle_x, paddle_y),
-                Rectangle::new(
+                RectCollider::new(
                     paddle_x - paddle_w / 2.,
                     paddle_y - paddle_h / 2.,
                     paddle_w,
@@ -61,7 +61,7 @@ pub fn spawn_paddle(
                 Paddle,
                 Player::Cpu,
                 Position::new(paddle_x, paddle_y),
-                Rectangle::new(
+                RectCollider::new(
                     paddle_x - paddle_w / 2.,
                     paddle_y - paddle_h / 2.,
                     paddle_w,
@@ -76,15 +76,15 @@ pub fn spawn_paddle(
 
 pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
     for (_, (_, player, pos, collider, speed)) in world
-        .query::<(&Paddle, &Player, &mut Position, &mut Rectangle, &Speed)>()
+        .query::<(&Paddle, &Player, &mut Position, &mut RectCollider, &Speed)>()
         .iter()
     {
         // Limit movement
-        if pos.y - collider.height / 2. <= 0. {
-            pos.y = collider.height / 2.;
+        if pos.y - collider.val.height / 2. <= 0. {
+            pos.y = collider.val.height / 2.;
         }
-        if pos.y + collider.height / 2. >= WHEIGHT as f32 {
-            pos.y = WHEIGHT as f32 - collider.height / 2.;
+        if pos.y + collider.val.height / 2. >= WHEIGHT as f32 {
+            pos.y = WHEIGHT as f32 - collider.val.height / 2.;
         }
 
         match player {
@@ -115,19 +115,19 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
         }
 
         // Update collider
-        collider.x = pos.x - collider.width / 2.;
-        collider.y = pos.y - collider.height / 2.;
+        collider.val.x = pos.x - collider.val.width / 2.;
+        collider.val.y = pos.y - collider.val.height / 2.;
     }
 }
 
 pub fn render_paddle(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
     for (_, (_, position, collider, texture)) in world
-        .query::<(&Paddle, &Position, &Rectangle, &Texture2D)>()
+        .query::<(&Paddle, &Position, &RectCollider, &Texture2D)>()
         .iter()
     {
-        let source_rec = Rectangle::new(0., 0., collider.width, collider.height);
-        let dest_rec = Rectangle::new(position.x, position.y, collider.width, collider.height);
-        let origin = Vector2::new(collider.width / 2., collider.height / 2.);
+        let source_rec = Rectangle::new(0., 0., collider.val.width, collider.val.height);
+        let dest_rec = Rectangle::new(position.x, position.y, collider.val.width, collider.val.height);
+        let origin = Vector2::new(collider.val.width / 2., collider.val.height / 2.);
 
         d.draw_texture_pro(texture, source_rec, dest_rec, origin, 0., Color::WHITE);
         // d.draw_rectangle_rec(collider, Color::MEDIUMSPRINGGREEN);
