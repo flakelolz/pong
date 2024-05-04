@@ -12,7 +12,7 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
     spawn_paddle(rl, thread, &mut world, Player::Left);
     spawn_paddle(rl, thread, &mut world, Player::Cpu);
     spawn_ball(rl, thread, &mut world);
-    resources(&mut world);
+    spawn_score(&mut world);
 
     while !rl.window_should_close() {
         // Update

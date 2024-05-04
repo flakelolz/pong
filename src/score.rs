@@ -1,9 +1,19 @@
 use crate::prelude::*;
 
+#[derive(Debug, Default)]
+pub struct Score {
+    pub left: i32,
+    pub right: i32,
+}
+
+pub fn spawn_score(world: &mut World) -> Entity {
+    world.spawn((Score::default(),))
+}
+
 pub fn update_score(world: &mut World) {
-    if let Some((_, resources)) = world.query::<&mut Resources>().iter().next() {
-        let left = &mut resources.score.left;
-        let right = &mut resources.score.right;
+    if let Some((_, score)) = world.query::<&mut Score>().iter().next() {
+        let left = &mut score.left;
+        let right = &mut score.right;
 
         for (_, (_, pos, collider)) in world.query::<(&Ball, &mut Position, &Vector2)>().iter() {
             if pos.x - collider.x / 2. <= 0. {
@@ -18,9 +28,9 @@ pub fn update_score(world: &mut World) {
 }
 
 pub fn render_score(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
-    if let Some((_, resources)) = world.query::<&Resources>().iter().next() {
-        let left = &resources.score.left;
-        let right = &resources.score.right;
+    if let Some((_, score)) = world.query::<&Score>().iter().next() {
+        let left = &score.left;
+        let right = &score.right;
         d.draw_text(
             format!("{}", left).as_str(),
             WWIDTH / 2 - 120,

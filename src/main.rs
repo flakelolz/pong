@@ -2,7 +2,6 @@ mod ball;
 mod components;
 mod game;
 mod paddle;
-mod resources;
 mod score;
 
 pub mod prelude {
@@ -10,7 +9,6 @@ pub mod prelude {
     pub use crate::components::*;
     pub use crate::paddle::*;
     pub use crate::score::*;
-    pub use crate::resources::*;
 
     pub use hecs::{CommandBuffer, Entity, World};
     pub use raylib::prelude::*;
