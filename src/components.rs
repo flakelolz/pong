@@ -34,6 +34,14 @@ impl Speed {
     pub fn new(x: f32, y: f32) -> Self {
         Self { x, y }
     }
+
+    pub fn player_speed() -> Self {
+        Self { x: 0., y: 7. }
+    }
+
+    pub fn cpu_speed() -> Self {
+        Self { x: 0., y: 5. }
+    }
 }
 
 impl From<Speed> for ffi::Vector2 {
@@ -45,6 +53,7 @@ impl From<Speed> for ffi::Vector2 {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct RectCollider {
     pub val: Rectangle,
 }
@@ -68,6 +77,7 @@ impl From<RectCollider> for ffi::Rectangle {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct CircCollider {
     pub val: Vector2,
     pub radius: f32,
@@ -78,15 +88,6 @@ impl CircCollider {
         Self {
             val: Vector2::new(x, y),
             radius: (x / 2.).max(y / 2.),
-        }
-    }
-}
-
-impl From<CircCollider> for ffi::Vector2 {
-    fn from(collider: CircCollider) -> Self {
-        Self {
-            x: collider.val.x,
-            y: collider.val.y,
         }
     }
 }

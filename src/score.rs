@@ -15,7 +15,10 @@ pub fn update_score(world: &mut World) {
         let left = &mut score.left;
         let right = &mut score.right;
 
-        for (_, (_, pos, collider)) in world.query::<(&Ball, &mut Position, &CircCollider)>().iter() {
+        for (_, (_, pos, collider)) in world
+            .query::<(&Ball, &mut Position, &CircCollider)>()
+            .iter()
+        {
             if pos.x - collider.val.x / 2. <= 0. {
                 *right += 1;
                 reset_ball(pos);
@@ -33,14 +36,14 @@ pub fn render_score(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
         let right = &score.right;
         d.draw_text(
             format!("{}", left).as_str(),
-            WWIDTH / 2 - 120,
+            WWIDTH / 4 - 20,
             20,
             50,
             Color::WHITE,
         );
         d.draw_text(
             format!("{}", right).as_str(),
-            WWIDTH / 2 + 100,
+            3 * WWIDTH / 4 - 20,
             20,
             50,
             Color::WHITE,

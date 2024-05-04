@@ -17,7 +17,6 @@ pub fn spawn_paddle(
     let image = Image::load_image("assets/paddle.png").unwrap();
 
     let (paddle_w, paddle_h) = (24., 96.);
-    let (speed_x, speed_y) = (7., 7.);
 
     match player {
         Player::Left => {
@@ -33,7 +32,7 @@ pub fn spawn_paddle(
                     paddle_w,
                     paddle_h,
                 ),
-                Speed::new(speed_x, speed_y),
+                Speed::player_speed(),
                 texture,
             ))
         }
@@ -50,7 +49,7 @@ pub fn spawn_paddle(
                     paddle_w,
                     paddle_h,
                 ),
-                Speed::new(speed_x, speed_y),
+                Speed::player_speed(),
                 texture,
             ))
         }
@@ -67,7 +66,7 @@ pub fn spawn_paddle(
                     paddle_w,
                     paddle_h,
                 ),
-                Speed::new(5., 5.),
+                Speed::cpu_speed(),
                 texture,
             ))
         }
@@ -120,16 +119,40 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
     }
 }
 
+pub fn change_player(rl: &mut RaylibHandle, world: &mut World) {
+    if rl.is_key_pressed(KeyboardKey::KEY_P) {
+        for (_, (_, player, speed)) in world.query::<(&Paddle, &mut Player, &mut Speed)>().iter() {
+            match player {
+                Player::Right => {
+                    *player = Player::Cpu;
+                    *speed = Speed::cpu_speed();
+                }
+                Player::Cpu => {
+                    *player = Player::Right;
+                    *speed = Speed::player_speed();
+                }
+                _ => (),
+            }
+        }
+    }
+}
+
 pub fn render_paddle(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
     for (_, (_, position, collider, texture)) in world
         .query::<(&Paddle, &Position, &RectCollider, &Texture2D)>()
         .iter()
     {
         let source_rec = Rectangle::new(0., 0., collider.val.width, collider.val.height);
-        let dest_rec = Rectangle::new(position.x, position.y, collider.val.width, collider.val.height);
+        let dest_rec = Rectangle::new(
+            position.x,
+            position.y,
+            collider.val.width,
+            collider.val.height,
+        );
         let origin = Vector2::new(collider.val.width / 2., collider.val.height / 2.);
 
         d.draw_texture_pro(texture, source_rec, dest_rec, origin, 0., Color::WHITE);
+        // Debug
         // d.draw_rectangle_rec(collider, Color::MEDIUMSPRINGGREEN);
         // d.draw_circle(position.x as i32, position.y as i32, 1., Color::RED);
     }

@@ -21,6 +21,8 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
         check_collision(&mut world);
         update_score(&mut world);
 
+        change_player(rl, &mut world);
+
         // Camera
         // FIX: Scale with screen size correctly
         let width = rl.get_screen_width() as f32;
