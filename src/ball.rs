@@ -50,7 +50,7 @@ pub fn ball_collision(world: &mut World, sound: &Sound) {
         .iter()
         .next()
     {
-        for (_, (_, p_collider)) in world.query::<(&Paddle, &RectCollider)>().iter() {
+        for (_, (_, p_collider)) in world.query::<(&Player, &RectCollider)>().iter() {
             if p_collider
                 .val
                 .check_collision_circle_rec(b_pos, b_collider.radius)

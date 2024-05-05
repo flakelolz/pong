@@ -61,9 +61,14 @@ pub fn handle_menus(
     }
 }
 
-pub fn reset_game(rl: &mut RaylibHandle, thread: &RaylibThread, world: &mut World, state: &mut GameState) {
+pub fn reset_game(
+    rl: &mut RaylibHandle,
+    thread: &RaylibThread,
+    world: &mut World,
+    state: &mut GameState,
+) {
     let mut opponent = Player::Cpu;
-    for (_, (_, player)) in world.query::<(&Paddle, &mut Player)>().iter() {
+    for (_, player) in world.query::<&mut Player>().iter() {
         if *player == Player::Cpu || *player == Player::Right {
             opponent = *player;
         }

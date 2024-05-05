@@ -1,7 +1,5 @@
 use crate::prelude::*;
 
-pub struct Paddle;
-
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub enum Player {
     Left,
@@ -24,7 +22,6 @@ pub fn spawn_paddle(
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
             let (paddle_x, paddle_y) = (20., FHEIGHT / 2.);
             world.spawn((
-                Paddle,
                 Player::Left,
                 Position::new(paddle_x, paddle_y),
                 RectCollider::new(
@@ -41,7 +38,6 @@ pub fn spawn_paddle(
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
             let (paddle_x, paddle_y) = (FWIDTH - 20., FHEIGHT / 2.);
             world.spawn((
-                Paddle,
                 Player::Right,
                 Position::new(paddle_x, paddle_y),
                 RectCollider::new(
@@ -58,7 +54,6 @@ pub fn spawn_paddle(
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
             let (paddle_x, paddle_y) = (FWIDTH - 20., FHEIGHT / 2.);
             world.spawn((
-                Paddle,
                 Player::Cpu,
                 Position::new(paddle_x, paddle_y),
                 RectCollider::new(
@@ -75,8 +70,8 @@ pub fn spawn_paddle(
 }
 
 pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
-    for (_, (_, player, pos, collider, speed)) in world
-        .query::<(&Paddle, &Player, &mut Position, &mut RectCollider, &Speed)>()
+    for (_, (player, pos, collider, speed)) in world
+        .query::<(&Player, &mut Position, &mut RectCollider, &Speed)>()
         .iter()
     {
         // Limit movement
@@ -121,7 +116,7 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
 }
 
 pub fn change_opponent(world: &mut World, opponent: Player) {
-    for (_, (_, player, speed)) in world.query::<(&Paddle, &mut Player, &mut Speed)>().iter() {
+    for (_, (player, speed)) in world.query::<(&mut Player, &mut Speed)>().iter() {
         if *player == Player::Cpu || *player == Player::Right {
             match opponent {
                 Player::Right => {
@@ -139,7 +134,7 @@ pub fn change_opponent(world: &mut World, opponent: Player) {
 }
 
 pub fn swap_player(world: &mut World) {
-    for (_, (_, player, speed)) in world.query::<(&Paddle, &mut Player, &mut Speed)>().iter() {
+    for (_, (player, speed)) in world.query::<(&mut Player, &mut Speed)>().iter() {
         match player {
             Player::Right => {
                 *player = Player::Cpu;
@@ -156,7 +151,7 @@ pub fn swap_player(world: &mut World) {
 
 pub fn render_paddle(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
     for (_, (_, position, collider, texture)) in world
-        .query::<(&Paddle, &Position, &RectCollider, &Texture2D)>()
+        .query::<(&Player, &Position, &RectCollider, &Texture2D)>()
         .iter()
     {
         let source_rec = Rectangle::new(0., 0., collider.val.width, collider.val.height);
