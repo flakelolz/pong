@@ -1,5 +1,12 @@
 use crate::prelude::*;
 
+#[derive(PartialEq, Eq)]
+pub enum GameState {
+    Starting,
+    Playing,
+    Paused,
+}
+
 pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
     let mut world = World::new();
     let mut _commands = CommandBuffer::new();
@@ -9,25 +16,33 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
         ..Default::default()
     };
 
+    let mut state = GameState::Starting;
+
     spawn_paddle(rl, thread, &mut world, Player::Left);
-    spawn_paddle(rl, thread, &mut world, Player::Cpu);
+    spawn_paddle(rl, thread, &mut world, Player::Right);
     spawn_ball(rl, thread, &mut world);
     spawn_score(&mut world);
 
-    while !rl.window_should_close() {
-        // Update
-        move_paddle(rl, &mut world);
-        move_ball(&mut world);
-        check_collision(&mut world);
-        update_score(&mut world);
+    let mut quit = false;
+    let mut exit_window = false;
 
-        change_player(rl, &mut world);
+    while !exit_window {
+        if rl.window_should_close() || quit {
+            exit_window = true;
+        }
+        // Update
+        if state == GameState::Playing {
+            move_paddle(rl, &mut world);
+            move_ball(&mut world);
+            ball_collision(&mut world);
+            update_score(&mut world);
+        }
 
         // Camera
         // FIX: Scale with screen size correctly
         let width = rl.get_screen_width() as f32;
         let height = rl.get_screen_height() as f32;
-        let zoom = (width / WWIDTH as f32).min(height / WHEIGHT as f32);
+        let zoom = (width / WIDTH as f32).min(height / HEIGHT as f32);
         camera.zoom = zoom;
 
         // Drawing
@@ -35,9 +50,12 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
         let mut d = d.begin_mode2D(camera);
         d.clear_background(Color::BLACK);
 
-        d.draw_line(WWIDTH / 2, 0, WWIDTH / 2, WHEIGHT, Color::WHITE);
-        render_paddle(&mut d, &world);
-        render_ball(&mut d, &world);
-        render_score(&mut d, &world);
+        if state == GameState::Playing {
+            d.draw_line(WIDTH / 2, 0, WIDTH / 2, HEIGHT, Color::WHITE);
+            render_paddle(&mut d, &world);
+            render_ball(&mut d, &world);
+            render_score(&mut d, &world);
+        }
+        handle_menus(&mut d, &mut world, &mut state, &mut quit);
     }
 }

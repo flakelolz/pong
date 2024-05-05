@@ -22,7 +22,7 @@ pub fn update_score(world: &mut World) {
             if pos.x - collider.val.x / 2. <= 0. {
                 *right += 1;
                 reset_ball(pos);
-            } else if pos.x + collider.val.x / 2. >= WWIDTH as f32 {
+            } else if pos.x + collider.val.x / 2. >= WIDTH as f32 {
                 *left += 1;
                 reset_ball(pos);
             }
@@ -36,14 +36,14 @@ pub fn render_score(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
         let right = &score.right;
         d.draw_text(
             format!("{}", left).as_str(),
-            WWIDTH / 4 - 20,
+            WIDTH / 4 - 20,
             20,
             50,
             Color::WHITE,
         );
         d.draw_text(
             format!("{}", right).as_str(),
-            3 * WWIDTH / 4 - 20,
+            3 * WIDTH / 4 - 20,
             20,
             50,
             Color::WHITE,

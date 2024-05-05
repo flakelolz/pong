@@ -2,6 +2,7 @@ use crate::prelude::*;
 
 pub struct Paddle;
 
+#[derive(Clone, Copy, PartialEq, Eq)]
 pub enum Player {
     Left,
     Right,
@@ -21,7 +22,7 @@ pub fn spawn_paddle(
     match player {
         Player::Left => {
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
-            let (paddle_x, paddle_y) = (20., WHEIGHT as f32 / 2.);
+            let (paddle_x, paddle_y) = (20., HEIGHT as f32 / 2.);
             world.spawn((
                 Paddle,
                 Player::Left,
@@ -38,7 +39,7 @@ pub fn spawn_paddle(
         }
         Player::Right => {
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
-            let (paddle_x, paddle_y) = (WWIDTH as f32 - 20., WHEIGHT as f32 / 2.);
+            let (paddle_x, paddle_y) = (WIDTH as f32 - 20., HEIGHT as f32 / 2.);
             world.spawn((
                 Paddle,
                 Player::Right,
@@ -55,7 +56,7 @@ pub fn spawn_paddle(
         }
         Player::Cpu => {
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
-            let (paddle_x, paddle_y) = (WWIDTH as f32 - 20., WHEIGHT as f32 / 2.);
+            let (paddle_x, paddle_y) = (WIDTH as f32 - 20., HEIGHT as f32 / 2.);
             world.spawn((
                 Paddle,
                 Player::Cpu,
@@ -82,8 +83,8 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
         if pos.y - collider.val.height / 2. <= 0. {
             pos.y = collider.val.height / 2.;
         }
-        if pos.y + collider.val.height / 2. >= WHEIGHT as f32 {
-            pos.y = WHEIGHT as f32 - collider.val.height / 2.;
+        if pos.y + collider.val.height / 2. >= HEIGHT as f32 {
+            pos.y = HEIGHT as f32 - collider.val.height / 2.;
         }
 
         match player {
@@ -119,20 +120,36 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
     }
 }
 
-pub fn change_player(rl: &mut RaylibHandle, world: &mut World) {
-    if rl.is_key_pressed(KeyboardKey::KEY_P) {
-        for (_, (_, player, speed)) in world.query::<(&Paddle, &mut Player, &mut Speed)>().iter() {
-            match player {
+pub fn change_opponent(world: &mut World, opponent: Player) {
+    for (_, (_, player, speed)) in world.query::<(&Paddle, &mut Player, &mut Speed)>().iter() {
+        if *player == Player::Cpu || *player == Player::Right {
+            match opponent {
                 Player::Right => {
-                    *player = Player::Cpu;
-                    *speed = Speed::cpu_speed();
-                }
-                Player::Cpu => {
                     *player = Player::Right;
                     *speed = Speed::player_speed();
                 }
+                Player::Cpu => {
+                    *player = Player::Cpu;
+                    *speed = Speed::cpu_speed();
+                }
                 _ => (),
             }
+        }
+    }
+}
+
+pub fn swap_player(world: &mut World) {
+    for (_, (_, player, speed)) in world.query::<(&Paddle, &mut Player, &mut Speed)>().iter() {
+        match player {
+            Player::Right => {
+                *player = Player::Cpu;
+                *speed = Speed::cpu_speed();
+            }
+            Player::Cpu => {
+                *player = Player::Right;
+                *speed = Speed::player_speed();
+            }
+            _ => (),
         }
     }
 }

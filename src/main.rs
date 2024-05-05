@@ -1,31 +1,37 @@
 mod ball;
 mod components;
 mod game;
+mod menu;
 mod paddle;
 mod score;
 
 pub mod prelude {
     pub use crate::ball::*;
     pub use crate::components::*;
+    pub use crate::game::*;
+    pub use crate::menu::*;
     pub use crate::paddle::*;
     pub use crate::score::*;
 
     pub use hecs::{CommandBuffer, Entity, World};
     pub use raylib::prelude::*;
 
-    pub const WWIDTH: i32 = 800;
-    pub const WHEIGHT: i32 = 450;
+    pub const WIDTH: i32 = 800;
+    pub const HEIGHT: i32 = 450;
+    pub const FWIDTH: f32 = 800.;
+    pub const FHEIGHT: f32 = 450.;
 }
 use prelude::*;
 
 fn main() {
     let (mut rl, thread) = raylib::init()
-        .size(WWIDTH, WHEIGHT)
+        .size(WIDTH, HEIGHT)
         .resizable()
         .title("Raylib")
         .build();
 
     rl.set_target_fps(60);
+    // rl.set_exit_key(None);
 
     game::game(&mut rl, &thread);
 }
