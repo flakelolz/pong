@@ -173,8 +173,5 @@ pub fn render_paddle(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
         let origin = Vector2::new(collider.val.width / 2., collider.val.height / 2.);
 
         d.draw_texture_pro(texture, source_rec, dest_rec, origin, 0., Color::WHITE);
-        // Debug
-        // d.draw_rectangle_rec(collider, Color::MEDIUMSPRINGGREEN);
-        // d.draw_circle(position.x as i32, position.y as i32, 1., Color::RED);
     }
 }

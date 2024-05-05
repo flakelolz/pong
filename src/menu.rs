@@ -61,10 +61,7 @@ pub fn handle_menus(
     }
 }
 
-pub fn reset_game(
-    world: &mut World,
-    state: &mut GameState,
-) {
+pub fn reset_game(world: &mut World, state: &mut GameState) {
     reset_paddles(world);
     reset_ball(world);
     reset_score(world);

@@ -10,7 +10,6 @@ pub enum GameState {
 
 pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread, audio: &mut RaylibAudio) {
     let mut world = World::new();
-    let mut _commands = CommandBuffer::new();
 
     let mut camera = Camera2D {
         zoom: 1.0,
@@ -63,6 +62,7 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread, audio: &mut RaylibAudi
             render_ball(&mut d, &world);
             render_score(&mut d, &world);
         }
+
         handle_menus(&mut d, &mut world, &mut state, &mut quit);
     }
 }

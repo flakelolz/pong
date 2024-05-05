@@ -85,7 +85,5 @@ pub fn render_ball(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
         let origin = Vector2::new(collider.val.x / 2., collider.val.y / 2.);
 
         d.draw_texture_pro(texture, source_rec, dest_rec, origin, 0., Color::WHITE);
-        // Debug
-        // d.draw_circle_v(position, 1., Color::RED);
     }
 }
