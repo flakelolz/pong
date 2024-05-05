@@ -4,6 +4,7 @@ mod game;
 mod menu;
 mod paddle;
 mod score;
+mod assets;
 
 pub mod prelude {
     pub use crate::ball::*;
@@ -12,6 +13,7 @@ pub mod prelude {
     pub use crate::menu::*;
     pub use crate::paddle::*;
     pub use crate::score::*;
+    pub use crate::assets::*;
 
     pub use hecs::{CommandBuffer, Entity, World};
     pub use raylib::prelude::*;
@@ -32,6 +34,7 @@ fn main() {
 
     rl.set_target_fps(60);
     // rl.set_exit_key(None);
+    let mut audio = RaylibAudio::init_audio_device().unwrap();
 
-    game::game(&mut rl, &thread);
+    game::game(&mut rl, &thread, &mut audio);
 }

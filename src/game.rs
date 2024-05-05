@@ -7,7 +7,7 @@ pub enum GameState {
     Paused,
 }
 
-pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
+pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread, audio: &mut RaylibAudio) {
     let mut world = World::new();
     let mut _commands = CommandBuffer::new();
 
@@ -15,6 +15,8 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
         zoom: 1.0,
         ..Default::default()
     };
+
+    let assets = Assets::load_assets(audio);
 
     let mut state = GameState::Starting;
 
@@ -33,9 +35,9 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
         // Update
         if state == GameState::Playing {
             move_paddle(rl, &mut world);
-            move_ball(&mut world);
-            ball_collision(&mut world);
-            update_score(&mut world);
+            move_ball(rl, &mut world, &assets.walls);
+            ball_collision(&mut world, &assets.bounce);
+            update_score(rl, &mut world, &assets.scores);
         }
 
         // Camera

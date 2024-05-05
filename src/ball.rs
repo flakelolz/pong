@@ -3,7 +3,7 @@ use crate::prelude::*;
 pub struct Ball;
 
 pub fn spawn_ball(rl: &mut RaylibHandle, thread: &RaylibThread, world: &mut World) -> Entity {
-    let mut image = Image::load_image("assets/ball.png").unwrap();
+    let mut image = Image::load_image("assets/textures/ball.png").unwrap();
 
     let (ball_w, ball_h) = (32., 32.);
 
@@ -16,11 +16,12 @@ pub fn spawn_ball(rl: &mut RaylibHandle, thread: &RaylibThread, world: &mut Worl
         Position::new(FWIDTH / 2., FHEIGHT / 2.),
         Speed::new(7., 7.),
         CircCollider::new(ball_w, ball_h),
+        false,
         texture,
     ))
 }
 
-pub fn move_ball(world: &mut World) {
+pub fn move_ball(rl: &mut RaylibHandle, world: &mut World, sounds: &[Sound]) {
     for (_, (_, pos, collider, speed)) in world
         .query::<(&Ball, &mut Position, &CircCollider, &mut Speed)>()
         .iter()
@@ -30,17 +31,22 @@ pub fn move_ball(world: &mut World) {
 
         if pos.y + collider.val.y / 2. >= FHEIGHT || pos.y - collider.val.y / 2. <= 0. {
             speed.y *= -1.;
+
+            let rng: i32 = rl.get_random_value(0..4);
+            sounds[rng as usize].play();
         }
 
         if pos.x + collider.val.x / 2. >= FWIDTH || pos.x - collider.val.x / 2. <= 0. {
             speed.x *= -1.;
+            let rng: i32 = rl.get_random_value(0..4);
+            sounds[rng as usize].play();
         }
     }
 }
 
-pub fn ball_collision(world: &mut World) {
-    if let Some((_, (_, b_pos, b_collider, b_speed))) = world
-        .query::<(&Ball, &Position, &CircCollider, &mut Speed)>()
+pub fn ball_collision(world: &mut World, sound: &Sound) {
+    if let Some((_, (_, b_pos, b_collider, b_speed, has_collided))) = world
+        .query::<(&Ball, &Position, &CircCollider, &mut Speed, &mut bool)>()
         .iter()
         .next()
     {
@@ -48,9 +54,16 @@ pub fn ball_collision(world: &mut World) {
             if p_collider
                 .val
                 .check_collision_circle_rec(b_pos, b_collider.radius)
+                && !*has_collided
             {
+                *has_collided = true;
                 b_speed.x *= -1.;
+                sound.play();
             }
+        }
+
+        if b_pos.x == FWIDTH / 2. {
+            *has_collided = false;
         }
     }
 }

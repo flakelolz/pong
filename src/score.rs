@@ -10,7 +10,7 @@ pub fn spawn_score(world: &mut World) -> Entity {
     world.spawn((Score::default(),))
 }
 
-pub fn update_score(world: &mut World) {
+pub fn update_score(rl: &mut RaylibHandle, world: &mut World, sound: &[Sound]) {
     if let Some((_, score)) = world.query::<&mut Score>().iter().next() {
         let left = &mut score.left;
         let right = &mut score.right;
@@ -21,9 +21,13 @@ pub fn update_score(world: &mut World) {
         {
             if pos.x - collider.val.x / 2. <= 0. {
                 *right += 1;
+                let rng: i32 = rl.get_random_value(0..4);
+                sound[rng as usize].play();
                 reset_ball(pos);
             } else if pos.x + collider.val.x / 2. >= FWIDTH {
                 *left += 1;
+                let rng: i32 = rl.get_random_value(0..4);
+                sound[rng as usize].play();
                 reset_ball(pos);
             }
         }

@@ -15,7 +15,7 @@ pub fn spawn_paddle(
     world: &mut World,
     player: Player,
 ) -> Entity {
-    let image = Image::load_image("assets/paddle.png").unwrap();
+    let image = Image::load_image("assets/textures/paddle.png").unwrap();
 
     let (paddle_w, paddle_h) = (24., 96.);
 
