@@ -42,7 +42,7 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread) {
         // FIX: Scale with screen size correctly
         let width = rl.get_screen_width() as f32;
         let height = rl.get_screen_height() as f32;
-        let zoom = (width / WIDTH as f32).min(height / HEIGHT as f32);
+        let zoom = (width / FWIDTH).min(height / FHEIGHT);
         camera.zoom = zoom;
 
         // Drawing

@@ -22,7 +22,7 @@ pub fn update_score(world: &mut World) {
             if pos.x - collider.val.x / 2. <= 0. {
                 *right += 1;
                 reset_ball(pos);
-            } else if pos.x + collider.val.x / 2. >= WIDTH as f32 {
+            } else if pos.x + collider.val.x / 2. >= FWIDTH {
                 *left += 1;
                 reset_ball(pos);
             }

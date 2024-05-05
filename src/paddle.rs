@@ -22,7 +22,7 @@ pub fn spawn_paddle(
     match player {
         Player::Left => {
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
-            let (paddle_x, paddle_y) = (20., HEIGHT as f32 / 2.);
+            let (paddle_x, paddle_y) = (20., FHEIGHT / 2.);
             world.spawn((
                 Paddle,
                 Player::Left,
@@ -39,7 +39,7 @@ pub fn spawn_paddle(
         }
         Player::Right => {
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
-            let (paddle_x, paddle_y) = (WIDTH as f32 - 20., HEIGHT as f32 / 2.);
+            let (paddle_x, paddle_y) = (FWIDTH - 20., FHEIGHT / 2.);
             world.spawn((
                 Paddle,
                 Player::Right,
@@ -56,7 +56,7 @@ pub fn spawn_paddle(
         }
         Player::Cpu => {
             let texture = rl.load_texture_from_image(thread, &image).unwrap();
-            let (paddle_x, paddle_y) = (WIDTH as f32 - 20., HEIGHT as f32 / 2.);
+            let (paddle_x, paddle_y) = (FWIDTH - 20., FHEIGHT / 2.);
             world.spawn((
                 Paddle,
                 Player::Cpu,
@@ -83,8 +83,8 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
         if pos.y - collider.val.height / 2. <= 0. {
             pos.y = collider.val.height / 2.;
         }
-        if pos.y + collider.val.height / 2. >= HEIGHT as f32 {
-            pos.y = HEIGHT as f32 - collider.val.height / 2.;
+        if pos.y + collider.val.height / 2. >= FHEIGHT {
+            pos.y = FHEIGHT - collider.val.height / 2.;
         }
 
         match player {

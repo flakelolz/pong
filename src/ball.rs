@@ -13,7 +13,7 @@ pub fn spawn_ball(rl: &mut RaylibHandle, thread: &RaylibThread, world: &mut Worl
 
     world.spawn((
         Ball,
-        Position::new(WIDTH as f32 / 2., HEIGHT as f32 / 2.),
+        Position::new(FWIDTH / 2., FHEIGHT / 2.),
         Speed::new(7., 7.),
         CircCollider::new(ball_w, ball_h),
         texture,
@@ -28,11 +28,11 @@ pub fn move_ball(world: &mut World) {
         pos.x += speed.x;
         pos.y += speed.y;
 
-        if pos.y + collider.val.y / 2. >= HEIGHT as f32 || pos.y - collider.val.y / 2. <= 0. {
+        if pos.y + collider.val.y / 2. >= FHEIGHT || pos.y - collider.val.y / 2. <= 0. {
             speed.y *= -1.;
         }
 
-        if pos.x + collider.val.x / 2. >= WIDTH as f32 || pos.x - collider.val.x / 2. <= 0. {
+        if pos.x + collider.val.x / 2. >= FWIDTH || pos.x - collider.val.x / 2. <= 0. {
             speed.x *= -1.;
         }
     }
@@ -45,7 +45,10 @@ pub fn ball_collision(world: &mut World) {
         .next()
     {
         for (_, (_, p_collider)) in world.query::<(&Paddle, &RectCollider)>().iter() {
-            if p_collider.val.check_collision_circle_rec(b_pos, b_collider.radius) {
+            if p_collider
+                .val
+                .check_collision_circle_rec(b_pos, b_collider.radius)
+            {
                 b_speed.x *= -1.;
             }
         }
@@ -53,8 +56,8 @@ pub fn ball_collision(world: &mut World) {
 }
 
 pub fn reset_ball(pos: &mut Position) {
-    pos.x = WIDTH as f32 / 2.;
-    pos.y = HEIGHT as f32 / 2.;
+    pos.x = FWIDTH / 2.;
+    pos.y = FHEIGHT / 2.;
 }
 
 pub fn render_ball(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
