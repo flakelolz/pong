@@ -23,14 +23,25 @@ pub fn update_score(rl: &mut RaylibHandle, world: &mut World, sound: &[Sound]) {
                 *right += 1;
                 let rng: i32 = rl.get_random_value(0..4);
                 sound[rng as usize].play();
-                reset_ball(pos);
+
+                pos.x = FWIDTH / 2.;
+                pos.y = FHEIGHT / 2.;
             } else if pos.x + collider.val.x / 2. >= FWIDTH {
                 *left += 1;
                 let rng: i32 = rl.get_random_value(0..4);
                 sound[rng as usize].play();
-                reset_ball(pos);
+
+                pos.x = FWIDTH / 2.;
+                pos.y = FHEIGHT / 2.;
             }
         }
+    }
+}
+
+pub fn reset_score(world: &mut World) {
+    if let Some((_, score)) = world.query::<&mut Score>().iter().next() {
+        score.left = 0;
+        score.right = 0;
     }
 }
 

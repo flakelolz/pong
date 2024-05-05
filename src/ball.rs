@@ -68,9 +68,11 @@ pub fn ball_collision(world: &mut World, sound: &Sound) {
     }
 }
 
-pub fn reset_ball(pos: &mut Position) {
-    pos.x = FWIDTH / 2.;
-    pos.y = FHEIGHT / 2.;
+pub fn reset_ball(world: &mut World) {
+    for (_, (_, pos)) in world.query::<(&Ball, &mut Position)>().iter() {
+        pos.x = FWIDTH / 2.;
+        pos.y = FHEIGHT / 2.;
+    }
 }
 
 pub fn render_ball(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {

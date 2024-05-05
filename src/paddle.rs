@@ -149,6 +149,15 @@ pub fn swap_player(world: &mut World) {
     }
 }
 
+pub fn reset_paddles(world: &mut World) {
+    for (_, (player, position)) in world.query::<(&Player, &mut Position)>().iter() {
+        match player {
+            Player::Left => *position = Position::new(20., FHEIGHT / 2.),
+            Player::Right | Player::Cpu => *position = Position::new(FWIDTH - 20., FHEIGHT / 2.),
+        }
+    }
+}
+
 pub fn render_paddle(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
     for (_, (_, position, collider, texture)) in world
         .query::<(&Player, &Position, &RectCollider, &Texture2D)>()

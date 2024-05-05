@@ -62,23 +62,11 @@ pub fn handle_menus(
 }
 
 pub fn reset_game(
-    rl: &mut RaylibHandle,
-    thread: &RaylibThread,
     world: &mut World,
     state: &mut GameState,
 ) {
-    let mut opponent = Player::Cpu;
-    for (_, player) in world.query::<&mut Player>().iter() {
-        if *player == Player::Cpu || *player == Player::Right {
-            opponent = *player;
-        }
-    }
-
-    world.clear();
-
-    spawn_paddle(rl, thread, world, Player::Left);
-    spawn_paddle(rl, thread, world, opponent);
-    spawn_ball(rl, thread, world);
-    spawn_score(world);
+    reset_paddles(world);
+    reset_ball(world);
+    reset_score(world);
     *state = GameState::Playing;
 }

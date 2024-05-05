@@ -34,7 +34,7 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread, audio: &mut RaylibAudi
             exit_window = true;
         }
         if state == GameState::Reset {
-            reset_game(rl, thread, &mut world, &mut state);
+            reset_game(&mut world, &mut state);
         }
 
         // Update
