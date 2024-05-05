@@ -3,6 +3,7 @@ use crate::prelude::*;
 #[derive(PartialEq, Eq)]
 pub enum GameState {
     Starting,
+    Reset,
     Playing,
     Paused,
 }
@@ -32,6 +33,10 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread, audio: &mut RaylibAudi
         if rl.window_should_close() || quit {
             exit_window = true;
         }
+        if state == GameState::Reset {
+            reset_game(rl, thread, &mut world, &mut state);
+        }
+
         // Update
         if state == GameState::Playing {
             move_paddle(rl, &mut world);
