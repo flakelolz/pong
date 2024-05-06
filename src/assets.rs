@@ -20,11 +20,17 @@ impl<'a> Assets<'a> {
         let score_3 = audio.new_wave_from_memory(".ogg", score_3).unwrap();
         let score_4 = audio.new_wave_from_memory(".ogg", score_4).unwrap();
 
-        let score_0 = audio.new_sound_from_wave(&score_0).unwrap();
-        let score_1 = audio.new_sound_from_wave(&score_1).unwrap();
-        let score_2 = audio.new_sound_from_wave(&score_2).unwrap();
-        let score_3 = audio.new_sound_from_wave(&score_3).unwrap();
-        let score_4 = audio.new_sound_from_wave(&score_4).unwrap();
+        let mut score_0 = audio.new_sound_from_wave(&score_0).unwrap();
+        let mut score_1 = audio.new_sound_from_wave(&score_1).unwrap();
+        let mut score_2 = audio.new_sound_from_wave(&score_2).unwrap();
+        let mut score_3 = audio.new_sound_from_wave(&score_3).unwrap();
+        let mut score_4 = audio.new_sound_from_wave(&score_4).unwrap();
+
+        score_0.set_volume(0.5);
+        score_1.set_volume(0.5);
+        score_2.set_volume(0.5);
+        score_3.set_volume(0.5);
+        score_4.set_volume(0.5);
 
         let scores = vec![score_0, score_1, score_2, score_3, score_4];
 
@@ -40,11 +46,17 @@ impl<'a> Assets<'a> {
         let walls_3 = audio.new_wave_from_memory(".ogg", walls_3).unwrap();
         let walls_4 = audio.new_wave_from_memory(".ogg", walls_4).unwrap();
 
-        let walls_0 = audio.new_sound_from_wave(&walls_0).unwrap();
-        let walls_1 = audio.new_sound_from_wave(&walls_1).unwrap();
-        let walls_2 = audio.new_sound_from_wave(&walls_2).unwrap();
-        let walls_3 = audio.new_sound_from_wave(&walls_3).unwrap();
-        let walls_4 = audio.new_sound_from_wave(&walls_4).unwrap();
+        let mut walls_0 = audio.new_sound_from_wave(&walls_0).unwrap();
+        let mut walls_1 = audio.new_sound_from_wave(&walls_1).unwrap();
+        let mut walls_2 = audio.new_sound_from_wave(&walls_2).unwrap();
+        let mut walls_3 = audio.new_sound_from_wave(&walls_3).unwrap();
+        let mut walls_4 = audio.new_sound_from_wave(&walls_4).unwrap();
+
+        walls_0.set_volume(0.5);
+        walls_1.set_volume(0.5);
+        walls_2.set_volume(0.5);
+        walls_3.set_volume(0.5);
+        walls_4.set_volume(0.5);
 
         let walls = vec![walls_0, walls_1, walls_2, walls_3, walls_4];
 
