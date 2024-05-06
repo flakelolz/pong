@@ -61,12 +61,12 @@ pub fn game(
 
         /* --- Drawing --- */
         let mut d = rl.begin_drawing(thread);
-        d.clear_background(Color::GRAY);
+        d.clear_background(Color::BLACK);
 
         {
             // Render to texture
             let mut d = d.begin_texture_mode(thread, target);
-            d.clear_background(Color::GRAY);
+            d.clear_background(Color::BLACK);
 
             if state == GameState::Playing {
                 d.draw_line(WIDTH / 2, 0, WIDTH / 2, HEIGHT, Color::WHITE);
