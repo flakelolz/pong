@@ -13,8 +13,8 @@ pub fn spawn_paddle(
     world: &mut World,
     player: Player,
 ) -> Entity {
-    let bytes = include_bytes!("..\\assets\\textures\\paddle.png");
-    let image = Image::load_image_from_mem(".png", bytes).unwrap();
+    let image =
+        Image::load_image_from_mem(".png", get_file("textures/paddle.png").unwrap()).unwrap();
 
     let (paddle_w, paddle_h) = (24., 96.);
 

@@ -14,12 +14,14 @@ pub fn handle_menus(
             if d.gui_button(main_menu, Some(rstr!("VS CPU"))) {
                 *state = GameState::Playing;
                 change_opponent(world, Player::Cpu);
+                reset_game(world, state);
             }
 
             let main_menu = Rectangle::new((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) + 20., w, h);
             if d.gui_button(main_menu, Some(rstr!("VS P2"))) {
                 *state = GameState::Playing;
                 change_opponent(world, Player::Right);
+                reset_game(world, state);
             }
 
             d.draw_text(

@@ -23,6 +23,8 @@ pub mod prelude {
     pub const HEIGHT: i32 = 450;
     pub const FWIDTH: f32 = 800.;
     pub const FHEIGHT: f32 = 450.;
+    pub use include_dir::{include_dir, Dir};
+    pub static ASSETS: Dir<'static> = include_dir!("$CARGO_MANIFEST_DIR/assets");
 }
 use prelude::*;
 
