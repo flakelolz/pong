@@ -35,7 +35,7 @@ pub fn game(
             exit_window = true;
         }
 
-        // Update
+        /* --- Update --- */
         if state == GameState::Playing {
             move_paddle(rl, &mut world);
             move_ball(rl, &mut world, &assets.walls);
@@ -59,7 +59,7 @@ pub fn game(
             -(rl.get_screen_height() as f32 - (FHEIGHT * scale)) * 0.5,
         ));
 
-        // Drawing
+        /* --- Drawing --- */
         let mut d = rl.begin_drawing(thread);
         d.clear_background(Color::GRAY);
 
