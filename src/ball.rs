@@ -70,9 +70,10 @@ pub fn ball_collision(world: &mut World, sound: &Sound) {
 }
 
 pub fn reset_ball(world: &mut World) {
-    for (_, (_, pos)) in world.query::<(&Ball, &mut Position)>().iter() {
+    for (_, (_, pos,has_collided)) in world.query::<(&Ball, &mut Position, &mut bool)>().iter() {
         pos.x = FWIDTH / 2.;
         pos.y = FHEIGHT / 2.;
+        *has_collided = false;
     }
 }
 

@@ -25,7 +25,7 @@ pub fn handle_menus(
             }
 
             d.draw_text(
-                "P1: W - S\n\nP2: Up - Down\n\nEsc: Pause\n",
+                "P1: W - S\n\nP2: Up - Down\n\nEnter: Pause\n",
                 12,
                 HEIGHT - 120,
                 20,

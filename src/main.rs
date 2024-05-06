@@ -17,15 +17,17 @@ pub mod prelude {
     pub use crate::score::*;
 
     pub use hecs::{CommandBuffer, Entity, World};
+    pub use include_dir::{include_dir, Dir};
     pub use raylib::prelude::*;
+
+    pub static ASSETS: Dir<'static> = include_dir!("$CARGO_MANIFEST_DIR/assets");
 
     pub const WIDTH: i32 = 800;
     pub const HEIGHT: i32 = 450;
     pub const FWIDTH: f32 = 800.;
     pub const FHEIGHT: f32 = 450.;
-    pub use include_dir::{include_dir, Dir};
-    pub static ASSETS: Dir<'static> = include_dir!("$CARGO_MANIFEST_DIR/assets");
 }
+
 use prelude::*;
 
 fn main() {
@@ -36,7 +38,8 @@ fn main() {
         .build();
 
     rl.set_target_fps(60);
-    // rl.set_exit_key(None);
+    #[cfg(not(debug_assertions))]
+    rl.set_exit_key(None);
     let mut audio = RaylibAudio::init_audio_device().unwrap();
     audio.set_master_volume(0.65);
 
