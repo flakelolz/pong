@@ -37,15 +37,17 @@ fn main() {
         .title("Pong")
         .build();
 
-    rl.set_target_fps(60);
     #[cfg(not(debug_assertions))]
     rl.set_exit_key(None);
+
+    rl.set_target_fps(60);
+
     let mut audio = RaylibAudio::init_audio_device().unwrap();
     audio.set_master_volume(0.65);
+
     let mut target = rl
         .load_render_texture(&thread, WIDTH as u32, HEIGHT as u32)
         .unwrap();
-    target.set_texture_filter(&thread, TextureFilter::TEXTURE_FILTER_TRILINEAR);
 
     game::game(&mut rl, &thread, &mut audio, &mut target);
 }
