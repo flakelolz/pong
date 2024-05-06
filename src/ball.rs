@@ -3,7 +3,8 @@ use crate::prelude::*;
 pub struct Ball;
 
 pub fn spawn_ball(rl: &mut RaylibHandle, thread: &RaylibThread, world: &mut World) -> Entity {
-    let mut image = Image::load_image("assets/textures/ball.png").unwrap();
+    let bytes = include_bytes!("..\\assets\\textures\\ball.png");
+    let mut image = Image::load_image_from_mem(".png", bytes).unwrap();
 
     let (ball_w, ball_h) = (32., 32.);
 

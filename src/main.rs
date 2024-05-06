@@ -1,20 +1,20 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+mod assets;
 mod ball;
 mod components;
 mod game;
 mod menu;
 mod paddle;
 mod score;
-mod assets;
 
 pub mod prelude {
+    pub use crate::assets::*;
     pub use crate::ball::*;
     pub use crate::components::*;
     pub use crate::game::*;
     pub use crate::menu::*;
     pub use crate::paddle::*;
     pub use crate::score::*;
-    pub use crate::assets::*;
 
     pub use hecs::{CommandBuffer, Entity, World};
     pub use raylib::prelude::*;
