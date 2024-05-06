@@ -30,12 +30,13 @@ fn main() {
     let (mut rl, thread) = raylib::init()
         .size(WIDTH, HEIGHT)
         .resizable()
-        .title("Raylib")
+        .title("Pong")
         .build();
 
     rl.set_target_fps(60);
     // rl.set_exit_key(None);
     let mut audio = RaylibAudio::init_audio_device().unwrap();
+    audio.set_master_volume(0.65);
 
     game::game(&mut rl, &thread, &mut audio);
 }
