@@ -159,19 +159,19 @@ pub fn reset_paddles(world: &mut World) {
     }
 }
 
-pub fn render_paddle(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
+pub fn render_paddle(d: &mut RaylibTextureMode<RaylibDrawHandle>, world: &World) {
     for (_, (_, position, collider, texture)) in world
         .query::<(&Player, &Position, &RectCollider, &Texture2D)>()
         .iter()
     {
-        let source_rec = Rectangle::new(0., 0., collider.val.width, collider.val.height);
-        let dest_rec = Rectangle::new(
+        let source_rec = rrect(0., 0., collider.val.width, collider.val.height);
+        let dest_rec = rrect(
             position.x,
             position.y,
             collider.val.width,
             collider.val.height,
         );
-        let origin = Vector2::new(collider.val.width / 2., collider.val.height / 2.);
+        let origin = rvec2(collider.val.width / 2., collider.val.height / 2.);
 
         d.draw_texture_pro(texture, source_rec, dest_rec, origin, 0., Color::WHITE);
     }

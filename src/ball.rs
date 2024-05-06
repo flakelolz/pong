@@ -70,21 +70,21 @@ pub fn ball_collision(world: &mut World, sound: &Sound) {
 }
 
 pub fn reset_ball(world: &mut World) {
-    for (_, (_, pos,has_collided)) in world.query::<(&Ball, &mut Position, &mut bool)>().iter() {
+    for (_, (_, pos, has_collided)) in world.query::<(&Ball, &mut Position, &mut bool)>().iter() {
         pos.x = FWIDTH / 2.;
         pos.y = FHEIGHT / 2.;
         *has_collided = false;
     }
 }
 
-pub fn render_ball(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
+pub fn render_ball(d: &mut RaylibTextureMode<RaylibDrawHandle>, world: &World) {
     for (_, (_, position, collider, texture)) in world
         .query::<(&Ball, &Position, &CircCollider, &Texture2D)>()
         .iter()
     {
-        let source_rec = Rectangle::new(0., 0., collider.val.x, collider.val.y);
-        let dest_rec = Rectangle::new(position.x, position.y, collider.val.x, collider.val.y);
-        let origin = Vector2::new(collider.val.x / 2., collider.val.y / 2.);
+        let source_rec = rrect(0., 0., collider.val.x, collider.val.y);
+        let dest_rec = rrect(position.x, position.y, collider.val.x, collider.val.y);
+        let origin = rvec2(collider.val.x / 2., collider.val.y / 2.);
 
         d.draw_texture_pro(texture, source_rec, dest_rec, origin, 0., Color::WHITE);
     }

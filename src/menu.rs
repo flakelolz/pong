@@ -1,7 +1,7 @@
 use crate::prelude::*;
 
 pub fn handle_menus(
-    d: &mut RaylibMode2D<RaylibDrawHandle>,
+    d: &mut RaylibTextureMode<RaylibDrawHandle>,
     world: &mut World,
     state: &mut GameState,
     quit: &mut bool,
@@ -10,14 +10,14 @@ pub fn handle_menus(
         GameState::Starting => {
             let (w, h) = (96., 32.);
 
-            let main_menu = Rectangle::new((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) - 50., w, h);
+            let main_menu = rrect((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) - 50., w, h);
             if d.gui_button(main_menu, Some(rstr!("VS CPU"))) {
                 *state = GameState::Playing;
                 change_opponent(world, Player::Cpu);
                 reset_game(world, state);
             }
 
-            let main_menu = Rectangle::new((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) + 20., w, h);
+            let main_menu = rrect((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) + 20., w, h);
             if d.gui_button(main_menu, Some(rstr!("VS P2"))) {
                 *state = GameState::Playing;
                 change_opponent(world, Player::Right);
@@ -40,17 +40,17 @@ pub fn handle_menus(
         GameState::Paused => {
             let (w, h) = (96., 32.);
 
-            let main_menu = Rectangle::new((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) - 50., w, h);
+            let main_menu = rrect((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) - 50., w, h);
             if d.gui_button(main_menu, Some(rstr!("Main Menu"))) {
                 *state = GameState::Starting;
             }
 
-            let main_menu = Rectangle::new((FWIDTH / 2.) - w / 2., FHEIGHT / 2., w, h);
+            let main_menu = rrect((FWIDTH / 2.) - w / 2., FHEIGHT / 2., w, h);
             if d.gui_button(main_menu, Some(rstr!("Reset"))) {
                 *state = GameState::Reset;
             }
 
-            let main_menu = Rectangle::new((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) + 50., w, h);
+            let main_menu = rrect((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) + 50., w, h);
             if d.gui_button(main_menu, Some(rstr!("Quit Game"))) {
                 *quit = true;
             }

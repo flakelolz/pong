@@ -45,7 +45,7 @@ pub fn reset_score(world: &mut World) {
     }
 }
 
-pub fn render_score(d: &mut RaylibMode2D<RaylibDrawHandle>, world: &World) {
+pub fn render_score(d: &mut RaylibTextureMode<RaylibDrawHandle>, world: &World) {
     if let Some((_, score)) = world.query::<&Score>().iter().next() {
         let left = &score.left;
         let right = &score.right;

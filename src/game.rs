@@ -1,3 +1,4 @@
+#![allow(clippy::field_reassign_with_default)]
 use crate::prelude::*;
 
 #[derive(PartialEq, Eq)]
@@ -8,13 +9,13 @@ pub enum GameState {
     Paused,
 }
 
-pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread, audio: &mut RaylibAudio) {
+pub fn game(
+    rl: &mut RaylibHandle,
+    thread: &RaylibThread,
+    audio: &mut RaylibAudio,
+    target: &mut RenderTexture2D,
+) {
     let mut world = World::new();
-
-    let mut camera = Camera2D {
-        zoom: 1.0,
-        ..Default::default()
-    };
 
     let assets = Assets::load_assets(audio);
 
@@ -29,11 +30,9 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread, audio: &mut RaylibAudi
     let mut exit_window = false;
 
     while !exit_window {
+        // Exit game conditions
         if rl.window_should_close() || quit {
             exit_window = true;
-        }
-        if state == GameState::Reset {
-            reset_game(&mut world, &mut state);
         }
 
         // Update
@@ -44,25 +43,54 @@ pub fn game(rl: &mut RaylibHandle, thread: &RaylibThread, audio: &mut RaylibAudi
             update_score(rl, &mut world, &assets.scores);
         }
 
-        // Camera
-        // FIX: Scale with screen size correctly
-        let width = rl.get_screen_width() as f32;
-        let height = rl.get_screen_height() as f32;
-        let zoom = (width / FWIDTH).min(height / FHEIGHT);
-        camera.zoom = zoom;
+        if state == GameState::Reset {
+            reset_game(&mut world, &mut state);
+        }
+
+        // Calculate window
+        let width = rl.get_screen_width();
+        let height = rl.get_screen_height();
+        let scale = (width / WIDTH).min(height / HEIGHT) as f32;
+
+        // Mouse scale
+        rl.set_mouse_scale(1.0 / scale, 1.0 / scale);
+        rl.set_mouse_offset(rvec2(
+            -(rl.get_screen_width() as f32 - (FWIDTH * scale)) * 0.5,
+            -(rl.get_screen_height() as f32 - (FHEIGHT * scale)) * 0.5,
+        ));
 
         // Drawing
         let mut d = rl.begin_drawing(thread);
-        let mut d = d.begin_mode2D(camera);
-        d.clear_background(Color::BLACK);
+        d.clear_background(Color::GRAY);
 
-        if state == GameState::Playing {
-            d.draw_line(WIDTH / 2, 0, WIDTH / 2, HEIGHT, Color::WHITE);
-            render_paddle(&mut d, &world);
-            render_ball(&mut d, &world);
-            render_score(&mut d, &world);
+        {
+            // Render to texture
+            let mut d = d.begin_texture_mode(thread, target);
+            d.clear_background(Color::GRAY);
+
+            if state == GameState::Playing {
+                d.draw_line(WIDTH / 2, 0, WIDTH / 2, HEIGHT, Color::WHITE);
+                render_paddle(&mut d, &world);
+                render_ball(&mut d, &world);
+                render_score(&mut d, &world);
+            }
+
+            handle_menus(&mut d, &mut world, &mut state, &mut quit);
         }
 
-        handle_menus(&mut d, &mut world, &mut state, &mut quit);
+        // Render texture to screen with proper scaling
+        d.draw_texture_pro(
+            target.texture(),
+            rrect(0.0, 0.0, target.texture.width, -target.texture.height),
+            rrect(
+                (d.get_screen_width() as f32 - (FWIDTH * scale)) * 0.5,
+                (d.get_screen_height() as f32 - (FHEIGHT * scale)) * 0.5,
+                FWIDTH * scale,
+                FHEIGHT * scale,
+            ),
+            rvec2(0, 0),
+            0.0,
+            Color::WHITE,
+        );
     }
 }
