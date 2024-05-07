@@ -36,11 +36,11 @@ impl Speed {
     }
 
     pub fn player_speed() -> Self {
-        Self { x: 0., y: 7. }
+        Self { x: 0., y: 600. }
     }
 
     pub fn cpu_speed() -> Self {
-        Self { x: 0., y: 5. }
+        Self { x: 0., y: 380. }
     }
 }
 

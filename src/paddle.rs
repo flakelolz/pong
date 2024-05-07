@@ -86,25 +86,25 @@ pub fn move_paddle(rl: &RaylibHandle, world: &mut World) {
         match player {
             Player::Left => {
                 if rl.is_key_down(KeyboardKey::KEY_W) {
-                    pos.y -= speed.y;
+                    pos.y -= speed.y * rl.get_frame_time();
                 } else if rl.is_key_down(KeyboardKey::KEY_S) {
-                    pos.y += speed.y;
+                    pos.y += speed.y * rl.get_frame_time();
                 }
             }
             Player::Right => {
                 if rl.is_key_down(KeyboardKey::KEY_UP) {
-                    pos.y -= speed.y;
+                    pos.y -= speed.y * rl.get_frame_time();
                 } else if rl.is_key_down(KeyboardKey::KEY_DOWN) {
-                    pos.y += speed.y;
+                    pos.y += speed.y * rl.get_frame_time();
                 }
             }
             Player::Cpu => {
                 if let Some((_, (_, ball_pos))) = world.query::<(&Ball, &Position)>().iter().next()
                 {
                     if pos.y > ball_pos.y {
-                        pos.y -= speed.y;
+                        pos.y -= speed.y * rl.get_frame_time();
                     } else if pos.y < ball_pos.y {
-                        pos.y += speed.y;
+                        pos.y += speed.y * rl.get_frame_time();
                     }
                 }
             }

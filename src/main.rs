@@ -24,8 +24,8 @@ pub mod prelude {
 
     pub const WIDTH: i32 = 800;
     pub const HEIGHT: i32 = 450;
-    pub const FWIDTH: f32 = 800.;
-    pub const FHEIGHT: f32 = 450.;
+    pub const FWIDTH: f32 = WIDTH as f32;
+    pub const FHEIGHT: f32 = HEIGHT as f32;
 }
 
 use prelude::*;
@@ -35,12 +35,11 @@ fn main() {
         .size(WIDTH, HEIGHT)
         .resizable()
         .title("Pong")
+        .vsync()
         .build();
 
     #[cfg(not(debug_assertions))]
     rl.set_exit_key(None);
-
-    rl.set_target_fps(60);
 
     let mut audio = RaylibAudio::init_audio_device().unwrap();
     audio.set_master_volume(0.65);

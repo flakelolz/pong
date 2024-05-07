@@ -15,7 +15,7 @@ pub fn spawn_ball(rl: &mut RaylibHandle, thread: &RaylibThread, world: &mut Worl
     world.spawn((
         Ball,
         Position::new(FWIDTH / 2., FHEIGHT / 2.),
-        Speed::new(7., 7.),
+        Speed::new(500., 500.),
         CircCollider::new(ball_w, ball_h),
         false,
         texture,
@@ -27,8 +27,8 @@ pub fn move_ball(rl: &mut RaylibHandle, world: &mut World, sounds: &[Sound]) {
         .query::<(&Ball, &mut Position, &CircCollider, &mut Speed)>()
         .iter()
     {
-        pos.x += speed.x;
-        pos.y += speed.y;
+        pos.x += speed.x * rl.get_frame_time();
+        pos.y += speed.y * rl.get_frame_time();
 
         if pos.y + collider.val.y / 2. >= FHEIGHT || pos.y - collider.val.y / 2. <= 0. {
             speed.y *= -1.;
@@ -63,7 +63,7 @@ pub fn ball_collision(world: &mut World, sound: &Sound) {
             }
         }
 
-        if b_pos.x == FWIDTH / 2. {
+        if ((FWIDTH / 2.) - 25.0..(FWIDTH / 2.) + 25.0).contains(&b_pos.x) && *has_collided {
             *has_collided = false;
         }
     }
