@@ -12,12 +12,14 @@ pub enum GameState {
 pub fn game(
     rl: &mut RaylibHandle,
     thread: &RaylibThread,
-    audio: &mut RaylibAudio,
+    audio: RaylibAudio,
     target: &mut RenderTexture2D,
 ) {
     let mut world = World::new();
+    let audio = Rc::new(audio);
+    let mut settings = Settings::default();
 
-    let assets = Assets::load_assets(audio);
+    let assets = Assets::load_assets(audio.as_ref());
 
     let mut state = GameState::Starting;
 
@@ -34,6 +36,9 @@ pub fn game(
         if rl.window_should_close() || quit {
             exit_window = true;
         }
+
+        // audio.set_master_volume(volume);
+        apply_settings(&settings, audio.clone());
 
         /* --- Update --- */
         if state == GameState::Playing {
@@ -75,7 +80,7 @@ pub fn game(
                 render_score(&mut d, &world);
             }
 
-            handle_menus(&mut d, &mut world, &mut state, &mut quit);
+            handle_menus(&mut d, &mut world, &mut state, &mut quit, &mut settings);
         }
 
         // Render texture to screen with proper scaling

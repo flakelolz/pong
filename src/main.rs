@@ -6,6 +6,7 @@ mod game;
 mod menu;
 mod paddle;
 mod score;
+mod settings;
 
 pub mod prelude {
     pub use crate::assets::*;
@@ -15,10 +16,12 @@ pub mod prelude {
     pub use crate::menu::*;
     pub use crate::paddle::*;
     pub use crate::score::*;
+    pub use crate::settings::*;
 
     pub use hecs::{CommandBuffer, Entity, World};
     pub use include_dir::{include_dir, Dir};
     pub use raylib::prelude::*;
+    pub use std::rc::Rc;
 
     pub static ASSETS: Dir<'static> = include_dir!("$CARGO_MANIFEST_DIR/assets");
 
@@ -41,12 +44,11 @@ fn main() {
     #[cfg(not(debug_assertions))]
     rl.set_exit_key(None);
 
-    let mut audio = RaylibAudio::init_audio_device().unwrap();
-    audio.set_master_volume(0.65);
+    let audio = RaylibAudio::init_audio_device().unwrap();
 
     let mut target = rl
         .load_render_texture(&thread, WIDTH as u32, HEIGHT as u32)
         .unwrap();
 
-    game::game(&mut rl, &thread, &mut audio, &mut target);
+    game::game(&mut rl, &thread, audio, &mut target);
 }
