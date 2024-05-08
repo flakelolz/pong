@@ -37,9 +37,6 @@ pub fn game(
             exit_window = true;
         }
 
-        // audio.set_master_volume(volume);
-        apply_settings(&settings, audio.clone());
-
         /* --- Update --- */
         if state == GameState::Playing {
             move_paddle(rl, &mut world);
@@ -51,6 +48,9 @@ pub fn game(
         if state == GameState::Reset {
             reset_game(&mut world, &mut state);
         }
+
+        // Settings
+        apply_settings(&settings, Rc::clone(&audio));
 
         // Calculate window
         let width = rl.get_screen_width();

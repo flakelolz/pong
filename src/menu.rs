@@ -39,16 +39,11 @@ pub fn handle_menus(
                 Some(c"P1: W - S\n\nP2: Up - Down\n\nEnter: Pause\n"),
             );
 
-            // Volume label
-            d.gui_label(
-                rrect((FWIDTH) - 120., FHEIGHT - 60., 40, 16),
-                Some(c"Volume"),
-            );
             // Volume slider
             d.gui_slider_bar(
                 rrect((FWIDTH) - 150., FHEIGHT - 40., 100., 10.),
-                Some(c"0"),
-                Some(c"100"),
+                Some(c"Volume"),
+                Some(rstr!("{}", settings.volume).as_c_str()),
                 &mut settings.volume,
                 0.0,
                 1.0,
@@ -95,16 +90,11 @@ pub fn handle_menus(
                 Some(c"P1: W - S\n\nP2: Up - Down\n\nEnter: Pause\n"),
             );
 
-            // Volume label
-            d.gui_label(
-                rrect((FWIDTH) - 120., FHEIGHT - 60., 40, 16),
-                Some(c"Volume"),
-            );
             // Volume slider
             d.gui_slider_bar(
                 rrect((FWIDTH) - 150., FHEIGHT - 40., 100., 10.),
-                Some(c"0"),
-                Some(c"100"),
+                Some(c"Volume"),
+                Some(rstr!("{}", settings.volume).as_c_str()),
                 &mut settings.volume,
                 0.0,
                 1.0,
