@@ -66,16 +66,16 @@ pub fn handle_menus(
                 *state = GameState::Playing;
             }
 
-            // Back to main menu
-            let p_main_menu = rrect((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) - 50., w, h);
-            if d.gui_button(p_main_menu, Some(c"Main Menu")) {
-                *state = GameState::Starting;
-            }
-
             // Reset game
-            let p_reset = rrect((FWIDTH / 2.) - w / 2., FHEIGHT / 2., w, h);
+            let p_reset = rrect((FWIDTH / 2.) - w / 2., (FHEIGHT / 2.) - 50., w, h);
             if d.gui_button(p_reset, Some(c"Reset")) {
                 *state = GameState::Reset;
+            }
+
+            // Back to main menu
+            let p_main_menu = rrect((FWIDTH / 2.) - w / 2., FHEIGHT / 2., w, h);
+            if d.gui_button(p_main_menu, Some(c"Main Menu")) {
+                *state = GameState::Starting;
             }
 
             // Quit game
