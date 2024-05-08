@@ -22,7 +22,6 @@ pub mod prelude {
     pub use include_dir::{include_dir, Dir};
     pub use raylib::prelude::*;
     pub use std::rc::Rc;
-    pub use std::ffi::{CStr, CString};
 
     pub static ASSETS: Dir<'static> = include_dir!("$CARGO_MANIFEST_DIR/assets");
 
